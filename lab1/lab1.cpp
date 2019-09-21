@@ -1,58 +1,55 @@
 #include <iostream>
 #include <vector>
 
-class KV
+struct KV
 {
-public:
-    int m_key;
-    std::string m_value;
-
-    KV() {}
-    KV( int key, const std::string & value) :
-                     m_key(key), m_value(value) {}
+    int key;
+    std::string value;
 };
 
-void counting_sort( const std::vector<KV> &input,
-                    int max_key,
-                    std::vector<KV> &output )
+void countingSort( const std::vector<KV> &elems,
+                   int max_key,
+                   std::vector<KV> &output )
 {
-    std::vector<int> b(max_key+1, 0);
-    for( auto &elem : input)
+    std::vector<int> tmp(max_key+1, 0);
+    for( auto &elem : elems )
     {
-        ++b[elem.m_key];
-    }
-    
-    for(size_t i = 1; i < b.size(); ++i)
-    {
-        b[i] += b[i-1];
+        ++tmp[elem.key];
     }
 
-    for(int i = input.size() -1 ; i >= 0; --i)
+    for( size_t i = 1; i < tmp.size(); ++i )
     {
-        output[ b[input[i].m_key]- 1 ] = std::move( input[i] );
-        b[input[i].m_key]--;
+        tmp[i] += tmp[i-1];
+    }
+
+    for( int i = elems.size()-1; i >= 0; --i )
+    {
+        output[ tmp[elems[i].key] - 1 ] = elems[i];
+        tmp[elems[i].key]--;
     }
 }
 
 int main()
 {
-    int key, max_key;
-    std::string value;
-    std::vector<KV> input;
-    while( std::cin >> key >> value)
-    {
-        if( key > max_key)
-            max_key = key;
-        input.push_back( KV(key, value) );
+    KV kv_elem;
+    std::vector<KV> elems;
+    int max_key = std::numeric_limits<int>::min();
+
+    // Считываем ключ-значение из стандартного ввода.
+    while( std::cin >> kv_elem.key >> kv_elem.value ) {
+        max_key = std::max( kv_elem.key, max_key );
+        elems.push_back( kv_elem );
     }
-   
-    std::vector<KV> output( input.size() );
-    
-    counting_sort( input, max_key, output );
-    
-    for( auto & elem : output )
+
+    std::vector<KV> result( elems.size() );
+
+    countingSort( elems, max_key, result );
+
+    for( auto &elem : result )
     {
-        std::cout << elem.m_key << "\t" << elem.m_value << std::endl;
+        std::cout << elem.key << "\t" << elem.value << std::endl;
     }
+
     return 0;
 }
+

@@ -1,25 +1,46 @@
+#!/usr/bin/env bash
 
-if ! g++ -std=c++11 lab1.cpp -o lab1; then
+set -o errexit
+set -o pipefail
+set -o nounset
+
+function main() {
+  # Компилируем.
+  if ! make ; then
     echo "ERROR: Failed to compile file."
     exit 1
-fi
+  fi
 
-if ! python3 test_generator.py ; then
+  local test_dir=tests
+  rm -rf ${test_dir}
+  mkdir -p ${test_dir}
+
+  # Генерируем тесты.
+  if ! python3 test_generator.py ${test_dir} 10 ; then
     echo "ERROR: Failed to python generate tests."
     exit 1
-fi
+  fi
 
-for test_file in `ls tests/*.t`; do
+  # Запускаем тесты и сравниваем ответ.
+  for test_file in $(ls ${test_dir}/*.t); do
     echo "Execute ${test_file}"
-    if ! ./lab1 < $test_file > tmp ; then
-        echo "ERROR"
-        continue
-    fi
-    answer_file="${test_file%.*}"
 
-    if ! diff -u "${answer_file}.a" tmp ; then
-        echo "Failed"
+    local output_file=tmp
+    local exe_file=lab1
+    if ! ./${exe_file} < ${test_file} > ${output_file} ; then
+      echo "ERROR"
+      continue
+    fi
+
+    answer_file="${test_file%.*}"
+    if ! diff -u ${answer_file}.a ${output_file} ; then
+      echo "Failed"
     else
-        echo "OK"
-    fi 
-done
+      echo "OK"
+    fi
+    rm -f ${output_file}
+  done
+  rm -rf ${test_dir}
+}
+
+main $@
