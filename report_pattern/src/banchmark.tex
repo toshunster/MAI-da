@@ -1,0 +1,24 @@
+\section{Тест производительности}
+{\itshape Тут Вы описываете собственно тест производительности, сравнение Вашей реализации с уже существующими и т.д.}
+
+
+Тест производительности представляет из себя следующее: поиск образцов с помощью суффиксного массива сравнивается с поиском алгоритма КМП, но время на построение суффиксного массива не учитывается. Текст состоит из 1 миллиона букв: а образцов около 200 штук, длина которых может быть от 2 до 100 букв.
+
+\begin{alltt}
+Andys-MacBook-Pro:kmp Andy$ g++ main.cpp
+Andys-MacBook-Pro:kmp Andy$ ./a.out <../in.txt >out2.txt
+Andys-MacBook-Pro:kmp Andy$ cat out2.txt | grep "time"
+KMP search time: 1.639993 sec
+Andys-MacBook-Pro:sa Andy$ make
+g++ -pedantic -Wall -Werror -Wno-sign-compare -Wno-long-long -lm -O2 -o lab5
+main.cpp suffix_tree.cpp suffix_array.cpp
+Andys-MacBook-Pro:sa Andy$ ./lab5 <../in.txt >out1.txt
+Andys-MacBook-Pro:sa Andy$ cat out1.txt | grep "time"
+Suffix array build time: 2.179744 sec
+Suffix array search time: 0.003511 sec
+\end{alltt}
+
+Как видно, что суффиксный массив выиграл у КМП, так как и т.д.
+
+\pagebreak
+
