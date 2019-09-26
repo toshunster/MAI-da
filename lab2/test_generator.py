@@ -1,4 +1,7 @@
+#! /usr/bin/env python3
+
 # -*- coding: utf-8 -*-
+
 import sys
 import random
 import string
@@ -11,7 +14,7 @@ if __name__ == "__main__":
     if len(sys.argv) != 2:
         print( "Usage: {0} <count of tests>".format( sys.argv[0] ) )
         sys.exit(1)
-    
+
     count_of_tests = int( sys.argv[1] )
 
     actions = [ "+", "?" ]
@@ -23,14 +26,14 @@ if __name__ == "__main__":
              open( "{0}.a".format( test_file_name ), "w" ) as answer_file:
 
             # Для каждого файла генерируем от 1 до 100 тестов.
-            for _ in range( random.randint(1, 100) ):
+            for _ in range( random.randint(1, 10 ** 6) ):
                 action = random.choice( actions )
                 if action == "+":
                     key = get_random_key()
-                    value = random.randint( 1, 100 )
+                    value = random.randint(1, 100)
                     output_file.write("+ {0} {1}\n".format( key, value ))
                     key = key.lower()
-                    # Если в нашем словаре уже есть такой ключ, то ответе должно быть 
+                    # Если в нашем словаре уже есть такой ключ, то ответе должно быть
                     # сказано, что он существует, иначе --- успешное добавление.
                     answer = "Exists"
                     if key not in keys:
@@ -39,12 +42,12 @@ if __name__ == "__main__":
                     answer_file.write( "{0}\n".format( answer ) )
 
                 elif action == "?":
-                    search_exist_element = random.choice( [ True, False ] )
-                    key = random.choice( [ key for key in keys.keys() ] ) if search_exist_element and len( keys.keys() ) > 0 else get_random_key()
-                    output_file.write( "{0}\n".format( key ) )
+                    search_exist_element = random.choice([True, False])
+                    key = random.choice([key for key in keys.keys() ]) if search_exist_element and len(keys.keys()) > 0 else get_random_key()
+                    output_file.write("{0}\n".format(key))
                     key = key.lower()
                     if key in keys:
-                        answer = "OK: {0}".format( keys[key] )
+                        answer = "OK: {0}".format(keys[key])
                     else:
                         answer = "NoSuchWord"
-                    answer_file.write( "{0}\n".format( answer ) )
+                    answer_file.write("{0}\n".format(answer))
