@@ -2,6 +2,8 @@ import sys
 import random
 import string
 
+TEST_COUNT = 8
+
 def get_random_string():
     length = random.randint(10, 100)
     random_list = [ random.choice(string.ascii_letters) for _ in range(length) ]
@@ -14,14 +16,16 @@ def main():
 
     test_dir = sys.argv[1]
 
+    lines = [0]
+    lines.extend([ 10 ** i for i in range(TEST_COUNT) ])
 
-    for test_count in range(1, 11):
+    for enum, test_count in enumerate(range(1, TEST_COUNT+1)):
         test = []
         answer = []
 
-        line_count = random.randint(5, 1_000)
+        line_count = lines[enum]
         for _ in range(line_count):
-            key = random.randint(1, 1_000)
+            key = random.randint(1, 10_000)
             value = get_random_string()
             test.append((key, value))
 

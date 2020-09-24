@@ -4,8 +4,14 @@
 #include "sort.hpp"
 #include "vector.hpp"
 
-//using duration_t = std::chrono::microseconds;
+
+using duration_t = std::chrono::microseconds;
+const std::string DURATION_PREFIX = "us";
+
+/*
 using duration_t = std::chrono::milliseconds;
+const std::string DURATION_PREFIX = "ms";
+*/
 
 int main()
 {
@@ -18,7 +24,7 @@ int main()
     }
     input_stl = input;
 
-    std::cout << "Let's rock" << std::endl;
+    std::cout << "Count of lines is " << input.size() << std::endl;
 
     // Измеряем время работы сортировки подсчётом.
     std::chrono::time_point<std::chrono::system_clock> start_ts = std::chrono::system_clock::now();
@@ -32,6 +38,6 @@ int main()
     end_ts = std::chrono::system_clock::now();
 
     uint64_t stl_sort_ts = std::chrono::duration_cast<duration_t>( end_ts - start_ts ).count();
-    std::cout << "Counting sort time: " << counting_sort_ts << "ms" << std::endl;
-    std::cout << "STL sort time: " << stl_sort_ts << "ms" << std::endl;
+    std::cout << "Counting sort time: " << counting_sort_ts << DURATION_PREFIX << std::endl;
+    std::cout << "STL stable sort time: " << stl_sort_ts << DURATION_PREFIX << std::endl;
 }

@@ -3,20 +3,21 @@
 namespace sort
 {
 
-void CountingSort::sort()
-{
-    return;
-}
-
 /*
  * int - ключ
  * std::string - значение
  */
 void counting_sort( vector::Vector<Pair> &elems )
 {
-    int32_t max_elem = 0;
-    // std::max_element(std::begin(elems), std::end(elems));
-
+    if (elems.empty())
+    {
+        return;
+    }
+    auto max_elem_it = std::max_element( std::begin(elems), std::end(elems),
+                                         [](const Pair& lhs, const Pair& rhs) {
+                                             return rhs.first < lhs.first;
+                                         });
+    int32_t max_elem = max_elem_it->first;
     for (size_t i = 0; i < elems.size(); ++i)
     {
         auto pair = elems[i];
