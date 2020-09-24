@@ -1,9 +1,15 @@
-TARGET=lab1
-FLAGS=-std=c++11 -Wall -Wextra -pedantic
-COMPILER=g++
 
-all:
-	$(COMPILER) $(FLAGS) lab1.cpp -o $(TARGET)
+CC=g++
+FLAGS=-std=c++14 -pedantic -Wall -Wextra
+OUTPUT=lab1
 
+all: sort.o vector.o
+	$(CC) $(FLAGS) sort.o vector.o lab1.cpp -o $(OUTPUT)
+sort.o: sort.cpp sort.hpp
+	$(CC) $(FLAGS) -c sort.cpp
+vector.o: vector.cpp vector.hpp
+	$(CC) $(FLAGS) -c vector.cpp
+benchmark: sort.o vector.o benchmark.cpp
+	$(CC) $(FLAGS) sort.o vector.o benchmark.cpp -o benchmark
 clean:
-	rm -f $(TARGET)
+	rm *.o $(OUTPUT)
